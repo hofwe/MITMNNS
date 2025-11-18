@@ -1,0 +1,60 @@
+cmake_minimum_required(VERSION 3.0)
+project(examples)
+
+# Find nanoflannConfig.cmake:
+find_package(mitmnns REQUIRED)
+find_package(nanoflann)
+find_package(hnswlib)
+
+add_executable(direct_V direct_V.cpp)
+target_link_libraries(direct_V mitmnns::mitmnns)
+target_compile_features(direct_V PRIVATE cxx_std_20)
+target_include_directories(direct_V PRIVATE ".")
+
+if(nanoflann_FOUND)
+    message(STATUS "nanoflann found — enabling kdtree")
+
+    add_executable(kdtree_V kdtree_V.cpp)
+    target_link_libraries(kdtree_V mitmnns::mitmnns)
+    target_link_libraries(kdtree_V nanoflann::nanoflann)
+    target_compile_features(kdtree_V PRIVATE cxx_std_20)
+    target_include_directories(kdtree_V PRIVATE ".")
+else()
+    message(STATUS "nanoflann not found - continuing without it")
+endif()
+
+if(hnswlib_FOUND)
+    message(STATUS "hnswlib found - enabling hnsw")
+
+    add_executable(hnsw_V hnsw_V.cpp)
+    target_link_libraries(hnsw_V mitmnns::mitmnns)
+    target_link_libraries(hnsw_V hnswlib::hnswlib)
+    target_compile_features(hnsw_V PRIVATE cxx_std_20)
+    target_include_directories(hnsw_V PRIVATE ".")
+
+    add_executable(hnsw_CC_V hnsw_CC_V.cpp)
+    target_link_libraries(hnsw_CC_V mitmnns::mitmnns)
+    target_link_libraries(hnsw_CC_V hnswlib::hnswlib)
+    target_compile_features(hnsw_CC_V PRIVATE cxx_std_20)
+    target_include_directories(hnsw_CC_V PRIVATE ".")
+
+    add_executable(hnsw_T hnsw_T.cpp)
+    target_link_libraries(hnsw_T mitmnns::mitmnns)
+    target_link_libraries(hnsw_T hnswlib::hnswlib)
+    target_compile_features(hnsw_T PRIVATE cxx_std_20)
+    target_include_directories(hnsw_T PRIVATE ".")
+
+    add_executable(hnsw_mt_T hnsw_mt_T.cpp)
+    target_link_libraries(hnsw_mt_T mitmnns::mitmnns)
+    target_link_libraries(hnsw_mt_T hnswlib::hnswlib)
+    target_compile_features(hnsw_mt_T PRIVATE cxx_std_20)
+    target_include_directories(hnsw_mt_T PRIVATE ".")
+
+    add_executable(hnsw_Clifford_T hnsw_Clifford_T.cpp)
+    target_link_libraries(hnsw_Clifford_T mitmnns::mitmnns)
+    target_link_libraries(hnsw_Clifford_T hnswlib::hnswlib)
+    target_compile_features(hnsw_Clifford_T PRIVATE cxx_std_20)
+    target_include_directories(hnsw_Clifford_T PRIVATE ".")
+else()
+    message(STATUS "hnswlib not found - continuing without it")
+endif()
