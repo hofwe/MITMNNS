@@ -81,17 +81,17 @@ class PhaseInvariantCliffordSpace : public hnswlib::SpaceInterface<float> {
             auto* self = reinterpret_cast<const PhaseInvariantCliffordSpace*>(dim_ptr);
             const float* a = (const float*)p1;
             const float* b = (const float*)p2;
-            std::array<float, D*D*2> a_bdg{};
-            a_bdg.fill(0.f);
+            std::array<float, D*D*2> adg_b{};
+            adg_b.fill(0.f);
             for(int i = 0; i < D; i++) {
                 for(int j = 0; j < D; j++) {
                     for(int k = 0; k < D; k++) {
-                        a_bdg[(i*D+k)*2] += a[(i*D+j)*2]*b[(k*D+j)*2] + a[(i*D+j)*2+1]*b[(k*D+j)*2+1];
-                        a_bdg[(i*D+k)*2+1] += -a[(i*D+j)*2]*b[(k*D+j)*2+1] + a[(i*D+j)*2+1]*b[(k*D+j)*2];
+                        adg_b[(i*D+k)*2] += a[(j*D+i)*2]*b[(j*D+k)*2] + a[(j*D+i)*2+1]*b[(j*D+k)*2+1];
+                        adg_b[(i*D+k)*2+1] += a[(j*D+i)*2]*b[(j*D+k)*2+1] - a[(j*D+i)*2+1]*b[(j*D+k)*2];
                     }
                 }
             }
-            std::priority_queue<std::pair<float, hnswlib::labeltype>> result = self->_alg_hnsw->searchKnn(a_bdg.data(), 1);
+            std::priority_queue<std::pair<float, hnswlib::labeltype>> result = self->_alg_hnsw->searchKnn(adg_b.data(), 1);
             return result.top().first;
         };
     }
