@@ -96,6 +96,7 @@ For detailed formulation and performance analysis, see
 
 Example implementations are provided in the `examples/` directory.
 They demonstrate approximate synthesis of Haar-random unitaries.
+It is required to install [nanoflann](https://github.com/jlblancoc/nanoflann) and/or [HNSWlib](https://github.com/nmslib/hnswlib) beforehand if you want to run files with kdtree and/or HNSW respectively.
 
 After installation:
 
@@ -105,12 +106,19 @@ $ cmake -B build -S .
 $ cmake --build build
 ```
 
+Run:
+
+For Mac OS or Linux
+```bash
+$ ./build/<executable file>
+```
+
 ### Example Programs
 
 | File                  | Description                                                   |
 | --------------------- | ------------------------------------------------------------- |
 | `direct_V.cpp`        | 1-qubit Clifford+V synthesis using exhaustive search          |
-| `kdtree_V.cpp`        | 1-qubit Clifford+V synthesis using KD-tree        |
+| `kdtree_V.cpp`        | 1-qubit Clifford+V synthesis using KD-tree                    |
 | `hnsw_V.cpp`          | 1-qubit Clifford+V synthesis using HNSW                       |
 | `hnsw_T.cpp`          | 2-qubit Clifford+T synthesis using single-threaded HNSW       |
 | `hnsw_mt_T.cpp`       | 2-qubit Clifford+T synthesis using multi-threaded HNSW        |
